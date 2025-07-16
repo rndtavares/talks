@@ -1,11 +1,14 @@
 package dev.ronaldotavares.talks;
 
+import java.util.concurrent.*;
+
 public class VirtualThreads {
     public static void main(String[] args) {
         System.out.println("Virtual Threads");
 
         var virtualThreads = new VirtualThreads();
         virtualThreads.creatingThreads();
+        virtualThreads.executorService();
     }
 
     void creatingThreads(){
@@ -40,6 +43,40 @@ public class VirtualThreads {
             System.out.println(e);
         }
     }
+
+    void executorService(){
+        System.out.println("Executor Service examples");
+
+        singleThreadExecutor();
+        futureWithTimedResultCheck();
+    }
+
+    void singleThreadExecutor() {
+        System.out.println("Single Thread Executor");
+        Runnable printInventory = () -> System.out.println("Printing zoo inventory");
+        Runnable printRecords = () -> {
+            for (int i = 0; i < 3; i++)
+                System.out.println("Printing record:" + i);
+        };
+
+        try (ExecutorService service =
+                     Executors.newSingleThreadExecutor()) {
+            System.out.println("begin");
+            service.execute(printInventory);
+            service.execute(printRecords);
+            service.execute(printInventory);
+            System.out.println("end");
+        }
+    }
+
+    void futureWithTimedResultCheck(){
+        System.out.println("Future with Timed Result Check");
+        try {
+            CheckResults.main(null);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 }
 
 
@@ -65,5 +102,20 @@ class ComplexExample {
 
         //does not create a new thread, runs in the current thread
         new Thread(printInventory).run();
+    }
+}
+
+class CheckResults {
+    private static int counter = 0;
+    public static void main(String[] unused) throws Exception {
+        try (var service = Executors.newSingleThreadExecutor()) {
+            Future<?> result = service.submit(() -> {
+                for (int i = 0; i < 1_000_000; i++) counter++;
+            });
+            result.get(10, TimeUnit.SECONDS);
+            System.out.println("Reached!");
+        } catch (TimeoutException e) {
+            System.out.println("Not reached in time");
+        }
     }
 }
