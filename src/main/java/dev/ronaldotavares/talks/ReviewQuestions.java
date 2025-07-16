@@ -1,5 +1,7 @@
 package dev.ronaldotavares.talks;
 
+import java.util.concurrent.Executors;
+
 public class ReviewQuestions {
     public static void main(String[] args) {
         System.out.println("Review Questions");
@@ -14,40 +16,36 @@ public class ReviewQuestions {
     }
 
     void textBlocks(){
-        System.out.println("text blocks");
+        System.out.println("**Text blocks");
         System.out.println("Which are true about this code? (2 answers)");
         var textBlock = """ 
                          Java      \s 
                          21        \
                          LTS""";
-        System.out.print(textBlock);
-        //A. It outputs two lines.
-        //B. It outputs three lines.
-        //C. It outputs four lines.
-        //D. There is one line with trailing whitespace.
-        //E. There are two lines with trailing whitespace.
-        //F. If we indented each line five characters, it would change the output.
+        System.out.println(textBlock);
     }
 
     void patternMatching(){
-        System.out.println("pattern matching");
-        System.out.println("What is the output of calling printType(21)?");
+        System.out.println("**Pattern matching");
+        System.out.println("What is the output of calling printType(20)?");
         printType(21);
         System.out.println();
     }
 
     void printType(Object o) {
-        if (o instanceof Integer version) {
-            System.out.print("int");
-//        } else if (o instanceof Long version || version <= 20) {
-            System.out.print("long");
-//        } default {
+        if (o instanceof Integer version && version < 20) {
+            System.out.print("int" + version);
+        } else if (o instanceof Long version) {
+            System.out.print("long" + version);
+//        } else if (o instanceof Integer version || version >= 20) {
+//            System.out.print("bigger int");
+        } else {
             System.out.print("unknown");
         }
     }
 
     void switchExpressions(){
-        System.out.println("switch expressions");
+        System.out.println("**Switch expressions");
         System.out.println("A minimum of how many lines need to be corrected before the following method will compile?");
         findJavaChampion(30);
         System.out.println();
@@ -64,25 +62,24 @@ public class ReviewQuestions {
     }
 
     void records(){
-        System.out.println("Records");
+        System.out.println("**Records");
         System.out.println("Given the following record declaration, which line of code can fill in the blank and allow the code to compile?");
         var dogFood = new DogFood(10, "Pedigree");
     }
 
     record DogFood(int size, String brand) {
         public static int MAX_STORAGE = 100;
-//        public DogFood() {
+        public DogFood {
             //_______________________;
-            //size = MAX_STORAGE;  //A
-            //this.size = 10 //B
-            //if(brand==null) super.brand = "Unknown" //C
-            //throw new RuntimeException() //D
-            //E. Code does not compile
-//        }
+//            this.brand = "premier";
+//            if(brand==null) super.brand = "Unknown";
+//            size = MAX_STORAGE;
+//            this(size, brand);
+        }
     }
 
     void sealedClasses(){
-        System.out.println("Sealed Classes");
+        System.out.println("**Sealed Classes");
         System.out.println("Assuming the following classes are declared as top‐level types in the same file, which classes contain compiler errors? (2 answers)");
 
     }
@@ -98,11 +95,13 @@ public class ReviewQuestions {
     final class Silly {}
 
     void virtualThreads(){
-        System.out.println("Virtual Threads");
-        System.out.println("Which is used to create or working with virtual threads?");
-//        Thread.ofVirtualThread() //A
-//        VirtualThread.of() //B
-//        new VirtualThread() //C
-        Thread.ofVirtual(); //D
+        System.out.println("**Virtual Threads");
+        System.out.println("Which APIs exist for creating or working with virtual threads? (Choose 2.)");
+//        Executors.newVirtualThread();
+//        Executors.newVirtualThreadExecutor();
+        Executors.newVirtualThreadPerTaskExecutor();
+//        new VirtualThread();
+        Thread.ofVirtual();
+//        Thread.ofVirtualThread();
     }
 }
